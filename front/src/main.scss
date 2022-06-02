@@ -1,0 +1,54 @@
+body {
+    user-select: none
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+#panel {
+    display: flex;
+    width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    
+    color: rgb(245, 165, 61);
+    
+    b {
+        color: black;
+    }
+    #status {
+        display: none;
+        &.active {
+            display: block;
+        }
+    }
+    #buttons{ 
+        & > *{
+            font-size: 20px;
+            margin: 1px;
+            font-weight: 400;
+            padding: 3px;
+            cursor: pointer;
+        }
+        #start {
+            background-color: greenyellow;
+            &:hover {
+                background-color: palevioletred;
+
+            }
+        }
+        #settings {
+          &:hover {
+                background-color: gray;
+            }
+        }
+    } 
+}
+canvas {
+    border: solid;
+    display: block;
+    margin: 0 auto;
+}

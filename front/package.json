@@ -1,0 +1,36 @@
+{
+  "name": "tanks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack build --mode=production",
+    "dev": "webpack-dev-server"
+  },
+  "author": "Ivan Lychko <klonvl96@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-react-constant-elements": "^7.17.6",
+    "@babel/plugin-transform-react-inline-elements": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/runtime": "^7.17.9",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "sass": "^1.51.0",
+    "sass-loader": "^12.6.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1"
+  }
+}

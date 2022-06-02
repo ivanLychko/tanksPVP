@@ -1,0 +1,32 @@
+{
+    "canvas": {
+        "shadow": true,
+        "size-shadow": 7
+    },
+    "tank": {
+        "amount-bullet": 5,
+        "HP": 2,
+        "speedRegenBuller": 5000,
+        "speedRegenHP": 15000,
+        "isBulletBrakOnTank": true,
+        "isBulletBrakOnBuller": false,
+        "isBulletBrakOnBorder": true,
+        "size-bullet": 3, 
+        "size": 15, 
+        "speed": 10,
+        "controls" : {
+            "arrows": {
+                "up": "ArrowUp",
+                "down": "ArrowDown",
+                "left": "ArrowLeft",
+                "right": "ArrowRight"
+            },
+            "wasd": {
+                "up": "KeyW",
+                "down": "KeyS",
+                "left": "KeyA",
+                "right": "KeyD"
+            }
+        }
+    }
+}
