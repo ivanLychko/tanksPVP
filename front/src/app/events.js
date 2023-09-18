@@ -10,12 +10,12 @@ window.volume = localStorage.getItem('volume') ? localStorage.getItem('volume') 
 
 refs.startOnline.addEventListener("click", e => {
     disabledStartButtons();
-    new Socket(canvas);
+    setTimeout(() => new Socket(canvas), 200);
 });
 
 refs.startBot.addEventListener("click", e => {
     disabledStartButtons();
-    new Bot(canvas);
+    setTimeout(() => new Bot(canvas), 200);
 });
 
 refs.modalClose.addEventListener("click", e => {

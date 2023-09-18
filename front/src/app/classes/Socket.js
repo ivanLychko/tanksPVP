@@ -5,7 +5,10 @@ import Tank from "./Tank";
 export default class Socket {
 
     constructor(canvas) {
-        this.connection = io(process.env.SERVER_URL);
+        this.connection = io(process.env.SERVER_URL, {
+            transports: ['polling', 'websocket'],
+            credentials: true
+        });
         this.connection.canvas = canvas;
 
         const tank = new Tank(true);
@@ -56,7 +59,7 @@ export default class Socket {
         if (element) element.pos = pos;
     }
 
-    die({ id }) { 
+    die({ id }) {
         this.canvas.endGame(this.canvas.getMainElement().id === id ? 'LOSE' : 'WIN');
     }
 

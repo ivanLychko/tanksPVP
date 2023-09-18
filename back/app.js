@@ -5,13 +5,15 @@ const app = express();
 const http = require('http');
 const cors = require('cors');
 const server = http.createServer(app);
-
 const { Server } = require("socket.io");
 const io = new Server(server, {
     cors: {
         origin: process.env.CORS_URL,
-        methods: ["GET"]
-    }
+        methods: ["GET"],
+        credentials: true
+    },
+    transports: ['polling', 'websocket']
+
 });
 
 app.use(cors);
@@ -43,7 +45,7 @@ io.on('connection', (socket) => {
     socket.emit("createTank", { id: socket.id });
 
     socket.on("reinit", () => {
-        const tmp = {...lobby.players};
+        const tmp = { ...lobby.players };
 
         delete tmp[socket.id];
 
@@ -76,7 +78,7 @@ io.on('connection', (socket) => {
 
     socket.on("die", ({ id, status }) => {
         lobbys.splice(lobbys.findIndex(el => Object.keys(el.players).some(p => p === id)), 1);
-        
+
         sendLobby("buttonEnable", {});
     });
 
