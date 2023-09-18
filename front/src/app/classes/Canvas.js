@@ -102,7 +102,7 @@ export default class Canvas {
 
         this.#elements.forEach(el => el.print());
         if (main)
-            this.#panel.innerHTML = `<span><b>Патроны</b>: ${main.amountBullet}</span> <span><b>Жизни</b>: ${main.HP}</span>`;
+            this.#panel.innerHTML = `<span><b>Bullets</b>: ${main.amountBullet}</span> <span><b>HP</b>: ${main.HP}</span>`;
 
         this.#animationId = requestAnimationFrame(this.#draw.bind(this));
 

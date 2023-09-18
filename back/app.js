@@ -75,20 +75,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on("die", ({ id, status }) => {
-        // const listP = Object.keys(lobby.point);
-        // let winner;
-
-        // if (listP[0] === socket.id && status === 'WIN' ||
-        //     listP[1] === socket.id && status !== 'WIN')
-        //     winner = listP[0];
-
-        // else if ((listP[1] === socket.id && status === 'WIN') ||
-        //     listP[0] === socket.id && status !== 'WIN')
-        //     winner = listP[1];
-
-        // lobby.point[winner] = 1;
-        // socket.emit("buttonEnable");
-        
         lobbys.splice(lobbys.findIndex(el => Object.keys(el.players).some(p => p === id)), 1);
         
         sendLobby("buttonEnable", {});
@@ -102,8 +88,5 @@ io.on('connection', (socket) => {
 });
 
 
-app.get('/', (req, res) => {
-    res.send('<h1>Hello world</h1>');
-});
 
 server.listen(process.env.PORT);

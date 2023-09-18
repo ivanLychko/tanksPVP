@@ -1,11 +1,11 @@
 {
     "canvas": {
         "shadow": true,
-        "size-shadow": 7
+        "size-shadow": 15
     },
     "tank": {
         "amount-bullet": 5,
-        "HP": 2,
+        "HP": 5,
         "speedRegenBuller": 5000,
         "speedRegenHP": 15000,
         "isBulletBrakOnTank": true,

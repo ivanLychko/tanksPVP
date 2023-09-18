@@ -1,5 +1,5 @@
 import config from '../config.json';
-import { intersectionCircle, randomInt } from "../../functions";
+import { intersectionCircle, randomInt } from "../functions";
 
 export default class Tank {
 
@@ -15,10 +15,27 @@ export default class Tank {
     #HP = config.tank.HP;
     #amountBullet = config.tank["amount-bullet"];
 
+    #audio = {
+        'end': new Audio('sounds/end.mp3'),
+        'fire': new Audio('sounds/fire.mp3'),
+        'miss': new Audio('sounds/miss.mp3'),
+        'point': new Audio('sounds/point.mp3'),
+        'move': new Audio('sounds/move.mp3'),
+    };
+
     #intervalHP;
     #intervalBullet;
 
     bullets = [];
+
+    #actions = {
+        'createTank': () => { },
+        'addBullet': (bullet) => { },
+        'newPlayer': (pos, line) => { },
+        'line': (line) => { },
+        'pos': (pos) => { },
+        'die': (id, status) => { },
+    };
 
     constructor(isMain = false, id = null, pos = { x: 0, y: 0 }, line = { x: 0, y: 0 }, radius = config.tank.size, control = "wasd") {
 
@@ -40,13 +57,18 @@ export default class Tank {
             active: -1
         }));
 
-        if (isMain) socket.on("createTank", ({ id }) => this.#id = id);
+        if (isMain) this.action('createTank');
         else if (id) this.#id = id;
         else throw new Error('invalid argv in Tank');
     }
 
     get id() {
         return this.#id;
+    }
+
+    set id(val) {
+        if (!this.#id)
+            this.#id = val;
     }
 
     get isMain() {
@@ -69,10 +91,29 @@ export default class Tank {
     get canvas() {
         return this.#canvas;
     }
+    
+    #playAudio(name) {
+        if (!window.volume) return;
+
+        if(name !== 'move') this.#audio[name].currentTime = 0;
+        this.#audio[name].play();
+    }
 
     setDmg(b) {
-        if (!b.noneDmg) this.#HP -= 1;
+        if (!b.noneDmg) {
+            this.#HP -= 1;
+            this.#playAudio('point');
+        }
         if (this.#HP <= 0) setTimeout(() => this.#die(), 300);
+    }
+
+    action(name, ...params) {
+        if (this.#actions[name])
+            this.#actions[name](...params);
+    }
+
+    actionSet(name, fn) {
+        this.#actions[name] = fn;
     }
 
     addBullet(bullet) {
@@ -80,7 +121,9 @@ export default class Tank {
         this.#amountBullet -= 1;
 
         this.bullets.push(bullet);
-        socket.emit('addBullet', bullet);
+        this.#playAudio('fire');
+
+        this.action('addBullet', bullet);
     }
 
     init() {
@@ -88,7 +131,7 @@ export default class Tank {
         this.#initPos();
 
         if (this.#isMain) {
-            socket.emit("newPlayer", { "pos": this.pos, "line": this.line });
+            this.action('newPlayer', this.pos, this.line);
 
             this.#intervalBullet = setInterval(() => {
                 if (this.#HP < config.tank.HP)
@@ -145,13 +188,14 @@ export default class Tank {
         this.line.x = e.offsetX;
         this.line.y = e.offsetY;
 
-        socket.emit('line', this.line);
+        this.action('line', this.line);
     }
 
     #die() {
         if (this.#canvas) {
             const status = this.isMain ? 'LOSE' : 'WIN';
-            socket.emit('die', { id: this.id, status });
+            this.action('die', this.id, status);
+            this.#playAudio('end');
             this.#canvas.endGame(status);
         }
     }
@@ -183,10 +227,10 @@ export default class Tank {
         if (!this.canvas) return;
 
         if (this.#isMain) {
+            const oldPos = { ...this.pos };
+
             this.vector.forEach(v => {
                 v.speed = Math.min(2, Math.max(v.speed + 0.05 * v.active, 0))
-
-                const oldPos = { ...this.pos };
 
                 this.pos.x = Math.min(this.canvas.ctx.canvas.width - this.radius, Math.max(this.pos.x + v.direction[0] * v.speed, 0 + this.radius));
                 this.pos.y = Math.min(this.canvas.ctx.canvas.height - this.radius, Math.max(this.pos.y + v.direction[1] * v.speed, 0 + this.radius));
@@ -199,7 +243,9 @@ export default class Tank {
 
             });
 
-            socket.emit('pos', { pos: this.pos });
+            if (oldPos.x != this.pos.x || this.pos.y != oldPos.y) {
+                this.action('pos', this.pos);
+            }
         }
 
         this.bullets.filter(b => b.explode === 0).forEach(b => {
@@ -240,8 +286,12 @@ export default class Tank {
 
             if (config.tank.isBulletBrakOnBorder) {
                 if (b1.pos[0] < this.#br || b1.pos[0] > canvas.width - this.#br ||
-                    b1.pos[1] < this.#br || b1.pos[1] > canvas.height - this.#br)
+                    b1.pos[1] < this.#br || b1.pos[1] > canvas.height - this.#br) {
+                    if (b1.explode === 0) {
+                        this.#playAudio('miss');
+                    }
                     b1.explode = b1.explode || 0.1;
+                }
             }
         })
 
