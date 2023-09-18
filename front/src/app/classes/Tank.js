@@ -136,12 +136,12 @@ export default class Tank {
             this.#intervalBullet = setInterval(() => {
                 if (this.#HP < config.tank.HP)
                     this.#HP += 1;
-            }, config.tank.speedRegenHP);
+            }, config.tank.timeRegenHP);
 
             this.#intervalHP = setInterval(() => {
                 if (this.#amountBullet < config.tank["amount-bullet"])
                     this.#amountBullet += 1;
-            }, config.tank.speedRegenBuller);
+            }, config.tank.timeRegenBuller);
         }
 
         this.#liveId = setInterval(this.#live.bind(this), config.tank.speed);

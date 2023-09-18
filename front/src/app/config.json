@@ -6,10 +6,10 @@
     "tank": {
         "amount-bullet": 5,
         "HP": 5,
-        "speedRegenBuller": 5000,
-        "speedRegenHP": 15000,
+        "timeRegenBuller": 5000,
+        "timeRegenHP": 15000,
         "isBulletBrakOnTank": true,
-        "isBulletBrakOnBuller": false,
+        "isBulletBrakOnBuller": true,
         "isBulletBrakOnBorder": true,
         "size-bullet": 3, 
         "size": 15, 
