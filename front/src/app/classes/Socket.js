@@ -1,11 +1,11 @@
 import { getClassMethods } from "../functions";
-import refs from "../refs";
+import { io } from "socket.io-client";
 import Tank from "./Tank";
 
 export default class Socket {
 
     constructor(canvas) {
-        this.connection = io('ws://localhost:8080');
+        this.connection = io('ws://' + process.env.SERVER_URL);
         this.connection.canvas = canvas;
 
         const tank = new Tank(true);
@@ -56,7 +56,7 @@ export default class Socket {
         if (element) element.pos = pos;
     }
 
-    die({ id }) { 
+    die({ id }) {
         this.canvas.endGame(this.canvas.getMainElement().id === id ? 'LOSE' : 'WIN');
     }
 
