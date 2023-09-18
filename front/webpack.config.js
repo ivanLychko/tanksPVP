@@ -61,7 +61,7 @@ module.exports = (env, argv) => {
             new Dotenv(),
             new HtmlWebpackPlugin({
                 template: 'public/index.html',
-             //   favicon: 'public/favicon.png'
+                favicon: 'public/favicon.png'
             }),
             new CopyPlugin({
                 patterns: [
